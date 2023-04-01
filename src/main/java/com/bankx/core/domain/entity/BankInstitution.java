@@ -22,6 +22,6 @@ public class BankInstitution extends Audited {
     @Column(name = "bank_name")
     private String bankName;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", columnDefinition = "uuid")
     private UUID accountId;
 }

@@ -32,6 +32,6 @@ public class Customer extends Audited {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", columnDefinition = "uuid")
     private UUID accountId;
 }

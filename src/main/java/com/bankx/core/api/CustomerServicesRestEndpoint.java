@@ -27,11 +27,4 @@ public class CustomerServicesRestEndpoint {
         return null;
     }
 
-    @GetMapping("/findAll")
-    @ResponseBody
-    public List<CustomerDetailDto> findAll() {
-        //fixme
-        return null;
-    }
-
 }

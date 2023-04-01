@@ -28,9 +28,10 @@ public class FinancialTransaction extends Audited {
     @Column(name = "reference_number")
     private String referenceNumber;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", columnDefinition = "uuid")
     private UUID accountId;
 
+    private double amount;
     private LocalDateTime timestamp;
     private boolean isSettled;
 

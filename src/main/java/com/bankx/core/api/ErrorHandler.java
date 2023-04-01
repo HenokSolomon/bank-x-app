@@ -26,7 +26,7 @@ public class ErrorHandler {
     @ResponseBody
     public ErrorResponse handleServiceError(ServiceException ex, WebRequest request) {
 
-        LOGGER.error( "VIPErrorHandler ErrorHandler handleServiceError ", ex );
+        LOGGER.error( "ErrorHandler ErrorHandler handleServiceError ", ex );
 
         return ErrorResponse.builder()
                 .timestamp( LocalDateTime.now().format( DateTimeFormatter.ISO_DATE ) )
@@ -43,7 +43,7 @@ public class ErrorHandler {
     @ResponseBody
     public ErrorResponse handleUnknownError(Exception ex, WebRequest request) {
 
-        LOGGER.error( "VIPErrorHandler ErrorHandler handleUnknownError ", ex );
+        LOGGER.error( "ErrorHandler ErrorHandler handleUnknownError ", ex );
 
         return ErrorResponse.builder()
                 .timestamp( LocalDateTime.now().format( DateTimeFormatter.ISO_DATE ) )

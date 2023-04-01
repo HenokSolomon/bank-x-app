@@ -25,7 +25,7 @@ public class FinancialAccount extends Audited {
     @Enumerated(EnumType.STRING)
     private FinancialAccountTypeEnum financialAccountTypeEnum;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", columnDefinition = "uuid")
     private UUID accountId;
 
     @Column(name = "available_balance")

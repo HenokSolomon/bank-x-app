@@ -183,7 +183,7 @@
                             <tr>
                                 <td class="header center" width="100%">
                                     <a href="#">
-                                        Ondeck VIP Invitation
+                                       Bankx Account Activity Alert
                                     </a>
                                 </td>
                             </tr>
@@ -207,46 +207,14 @@
                                         <table cellspacing="0" cellpadding="0" width="100%">
                                             <tr>
                                                 <td class="left" style="padding-bottom:40px; text-align:left;">
-                                                    Hi <p th:text="${recipientName}"></p>,<br>
-                                                    <h2>Invitation to join Ondeck VIP Community </h2><br>
-                                                    <h4>Please click on Accept button if you want to join now or NoThanks button if you don't </h4>
+                                                    <h2>Hi <p th:text="${recipientName}"></p></h2>,<br>
+                                                    <h4>Your account <span th:text="${accountType}"/> has been &nbsp; <span th:text="${actionTYpe}"/> with amount R<span th:text="${amount}"/>  </h4><br>
+                                                    <h4>Transaction Reference <span th:text="${transactionReference}"/> </h4>
+                                                    <h4>Transaction date <span th:text="${transactionDate}"/> </h4>
 
                                                 </td>
                                             </tr>
                                         </table>
-
-                                        <table cellspacing="0" cellpadding="0" width="100%">
-                                            <tr>
-                                                <td class="mobile-center" align="left" style="padding:40px 0;">
-                                                    <div class="mobile-center" align="left"><!--[if mso]>
-                                                        <![endif]--><a id="btn-accept" th:href="@{'http://127.0.0.1:9090/vip/accept/' + ${vipRecordId}}" class="th:text='${recipientName}'" style="background-color:#41CC00;background-image:url(https://www.filepicker.io/api/file/N8GiNGsmT6mK6ORk00S7);
-                                                            border:1px solid #407429;border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:17px;
-                                                            font-weight:bold;text-shadow: -1px -1px #47A54B;line-height:38px;text-align:center;text-decoration:none;
-                                                            width:190px;-webkit-text-size-adjust:none;mso-hide:all;">Accept Invitation Now</a> </div>
-                                                </td>
-                                                <td class="mobile-center" align="left" style="padding:40px 0;">
-                                                    <div class="mobile-center" align="left"><!--[if mso]>
-                                                        <![endif]--><a th:href="@{'http://127.0.0.1:9090/vip/reject/' + ${vipRecordId}}" style="background-color:#d42414;background-image:url(https://www.filepicker.io/api/file/N8GiNGsmT6mK6ORk00S7);
-                                                            border:1px solid #407429;border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:17px;
-                                                            font-weight:bold;text-shadow: -1px -1px #a55247;line-height:38px;text-align:center;text-decoration:none;
-                                                            width:190px;-webkit-text-size-adjust:none;mso-hide:all;">No Thanks </a> </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        <table cellspacing="0" cellpadding="0" width="100%">
-                                            <tr>
-                                                <td class="left" style="text-align:left;">
-                                                    Thanks so much,
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="left" width="129" height="20" style="padding-top:10px; text-align:left;">
-                                                    <img class="left" width="129" height="20" src="https://www.filepicker.io/api/file/2R9HpqboTPaB4NyF35xt" alt="OnDeck">
-                                                </td>
-                                            </tr>
-                                        </table>
-
                                     </td>
                                 </tr>
                             </table>

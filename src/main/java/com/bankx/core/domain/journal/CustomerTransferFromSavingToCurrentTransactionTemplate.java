@@ -2,7 +2,7 @@ package com.bankx.core.domain.journal;
 
 import com.bankx.core.domain.entity.FinancialTransactionItem;
 
-public class CustomerSignupBonusPaymentTransactionTemplate implements FinancialTransactionTemplate {
+public class CustomerTransferFromSavingToCurrentTransactionTemplate implements FinancialTransactionTemplate {
 
     @Override
     public FinancialTransactionItem calculateAndGetTransactionItems() {

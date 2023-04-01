@@ -20,10 +20,10 @@ public class FinancialTransactionItem extends Audited {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID financialTransactionItemId;
 
-    @Column(name = "financial_transaction_id")
+    @Column(name = "financial_transaction_id", columnDefinition = "uuid")
     private UUID financialTransactionId;
 
-    @Column(name = "financial_account_id")
+    @Column(name = "financial_account_id", columnDefinition = "uuid")
     private UUID financialAccountId;
 
     @Column(name = "debit_amount")
