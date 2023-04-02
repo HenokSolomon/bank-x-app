@@ -40,7 +40,7 @@ public class FinancialServiceImpl implements FinancialService {
     private final MessagingService messagingService;
     private final AccountService accountService;
 
-    private Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();+
+    private Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
