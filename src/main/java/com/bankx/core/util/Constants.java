@@ -13,7 +13,7 @@ public class Constants {
     /* email address validation regex */
     public static final String REGEX_MATCHER_VALID_EMAIL = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
-    public static final String DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT = "bank account activity notification";
+    public static final String DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT = "Bank-x-App account activity notification";
     public static final String DEFAULT_EMAIL_FROM = "solomonmail88@gmail.com";
     public static final String DEFAULT_ACCOUNT_ACTIVITY_EMAIL_TEMPLATE_NAME = "account-notification-email-template";
 

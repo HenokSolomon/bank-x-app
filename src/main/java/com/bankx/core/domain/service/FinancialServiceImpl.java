@@ -21,6 +21,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.ListUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class FinancialServiceImpl implements FinancialService {
     private final MessagingService messagingService;
     private final AccountService accountService;
 
-    private Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();
+    private final Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -59,7 +61,6 @@ public class FinancialServiceImpl implements FinancialService {
         }
 
         systemOwnedFinancialAccounts
-                .stream()
                 .forEach(fa ->
                         SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE.put(fa.getFinancialAccountTypeEnum(),
                                 fa.getFinancialAccountId()));
@@ -101,8 +102,12 @@ public class FinancialServiceImpl implements FinancialService {
         Map<String, Object> txnParameters = new HashMap<>();
         txnParameters.put(Constants.TXN_PARAMETER_CUSTOMER_SAVING_ACCOUNT_ID, customerSavingAccountId);
 
-        return financialTransactionService.registerFinancialTransaction(FinancialTransactionTypeEnum.CUSTOMER_SIGNUP_BONUS_TRANSACTION,
+        var transaction = financialTransactionService.registerFinancialTransaction(FinancialTransactionTypeEnum.CUSTOMER_SIGNUP_BONUS_TRANSACTION,
                 customerAccountId, bonusAmount, txnParameters, SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE);
+
+        sendAccountActivityNotificationEmail(customerAccountId, FinancialAccountTypeEnum.SAVING_ACCOUNT, bonusAmount, transaction.getReferenceNumber(), true);
+
+        return transaction;
     }
 
     @Override
@@ -129,8 +134,8 @@ public class FinancialServiceImpl implements FinancialService {
 
 
         /* send notification for customer about account transfer */
-        final Customer customer = customerRepository.findFirstByAccountId(customerAccount.getAccountId());
-        sendAccountActivityNotificationEmail(customer.getEmail());
+        sendAccountActivityNotificationEmail(customerAccount.getAccountId(), savingAccount.getFinancialAccountTypeEnum(),
+                amount, transaction.getReferenceNumber(), false);
 
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
@@ -176,11 +181,11 @@ public class FinancialServiceImpl implements FinancialService {
 
         /* record transfer transaction */
         FinancialTransaction transaction = transferFromCurrentToSavingAccount(customerAccount.getAccountId(),
-                        savingAccount.getFinancialAccountId(), currentAccount.getFinancialAccountId(), amount);
+                savingAccount.getFinancialAccountId(), currentAccount.getFinancialAccountId(), amount);
 
         /* send notification for customer about account transfer */
-        final Customer customer = customerRepository.findFirstByAccountId(customerAccount.getAccountId());
-        sendAccountActivityNotificationEmail(customer.getEmail());
+        sendAccountActivityNotificationEmail(customerAccount.getAccountId(), currentAccount.getFinancialAccountTypeEnum(),
+                amount, transaction.getReferenceNumber(), false);
 
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
@@ -247,6 +252,8 @@ public class FinancialServiceImpl implements FinancialService {
                 financialTransactionService.registerFinancialTransaction(FinancialTransactionTypeEnum.BANK_CHARGE_CURRENT_ACCOUNT_FOR_PAYMENT_TRANSACTION,
                 bankInstAccount.getAccountId(), amount, txnParameter, SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE);
 
+        sendAccountActivityNotificationEmail(customerAccount.getAccountId(), customerCurrentFinAcc.getFinancialAccountTypeEnum(),
+                amount, transaction.getReferenceNumber(), true);
 
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
@@ -301,6 +308,8 @@ public class FinancialServiceImpl implements FinancialService {
                 financialTransactionService.registerFinancialTransaction(FinancialTransactionTypeEnum.BANK_ACCEPT_PAYMENT_TO_SAVING_ACCOUNT,
                         bankInstAccount.getAccountId(), amount, txnParameter, SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE);
 
+        sendAccountActivityNotificationEmail(customerAccount.getAccountId(), customerSavingFinAcc.getFinancialAccountTypeEnum(),
+                amount, transaction.getReferenceNumber(), false);
 
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
@@ -311,13 +320,22 @@ public class FinancialServiceImpl implements FinancialService {
     }
 
 
-    private void sendAccountActivityNotificationEmail(String toEmail) {
+    private void sendAccountActivityNotificationEmail(UUID toCustomerAccountId, FinancialAccountTypeEnum financialAccountTypeEnum,
+                                                      double amount, String txnReference, boolean isDebit) {
 
         try {
 
-            Map<String, Object> templateParam = new HashMap<>();
+            Customer customer = customerRepository.findFirstByAccountId(toCustomerAccountId);
 
-            messagingService.sendEmail(DEFAULT_EMAIL_FROM, toEmail, DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT,
+            Map<String, Object> templateParam = new HashMap<>();
+            templateParam.put("recipientName", customer.getFirstName() + " " + customer.getLastName());
+            templateParam.put("accountType", financialAccountTypeEnum.name());
+            templateParam.put("actionType", isDebit ? "Debited" : "Credited");
+            templateParam.put("amount", amount);
+            templateParam.put("transactionReference", txnReference);
+            templateParam.put("transactionDate", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+
+            messagingService.sendEmail(DEFAULT_EMAIL_FROM, customer.getEmail(), DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT,
                     DEFAULT_ACCOUNT_ACTIVITY_EMAIL_TEMPLATE_NAME, templateParam);
 
         } catch (Exception e) {
