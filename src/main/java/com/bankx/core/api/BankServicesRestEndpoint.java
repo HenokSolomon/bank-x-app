@@ -5,6 +5,8 @@ import com.bankx.core.domain.service.BankingService;
 import com.bankx.core.domain.service.FinancialService;
 import com.bankx.core.dto.AccountTransferDto;
 import com.bankx.core.dto.AllBankInstitutionDto;
+import com.bankx.core.dto.BulkBankTransactionRequestDto;
+import com.bankx.core.dto.BulkBankTransactionResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,11 @@ public class BankServicesRestEndpoint {
                 request.getCustomerAccountNumber(), request.getAmount());
     }
 
+    @PostMapping("/submitBulkBankTransactions")
+    @ResponseBody
+    public BulkBankTransactionResponseDto submitBulkBankTransactions(@RequestBody BulkBankTransactionRequestDto request) {
 
+        return bankingService.processBulkBankTransactions(request);
+    }
 
 }

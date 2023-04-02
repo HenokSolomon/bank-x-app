@@ -59,7 +59,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         /* create system account */
         final Account account = accountService.createAccount(AccountTypeEnum.CUSTOMER, null, null);
-
         customer.setAccountId(account.getAccountId());
         customerRepository.save(customer);
 

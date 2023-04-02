@@ -88,7 +88,7 @@ public class FinancialTransactionServiceImpl implements FinancialTransactionServ
         return financialTransaction;
     }
 
-
+    @Override
     public TransactionDetailDto getTransactionDetail(final String referenceNumber) {
 
         Optional<FinancialTransaction> optionalFinancialTransaction =
@@ -98,18 +98,16 @@ public class FinancialTransactionServiceImpl implements FinancialTransactionServ
         }
 
         FinancialTransaction financialTransaction = optionalFinancialTransaction.get();
-
-        List<FinancialTransactionItem> financialTransactionItems = financialTransactionItemRepository.
-                findAllByFinancialTransactionIdOrderByLineNumberAsc(financialTransaction.getFinancialTransactionId());
-
         Account txnByAccount = accountRepository.getById(financialTransaction.getAccountId());
 
         List<JournalEntryItem> journalEntryItems = new ArrayList<>();
 
+        List<FinancialTransactionItem> financialTransactionItems = financialTransactionItemRepository.
+                findAllByFinancialTransactionIdOrderByLineNumberAsc(financialTransaction.getFinancialTransactionId());
+
         financialTransactionItems.forEach(item -> {
 
             var finAccount = financialAccountRepository.findById(item.getFinancialAccountId());
-
             var entry = JournalEntryItem.builder()
                     .accountType(finAccount.map(fa -> fa.getFinancialAccountTypeEnum().name()).orElse(null))
                     .creditAmount(item.getCreditAmount())
@@ -117,7 +115,6 @@ public class FinancialTransactionServiceImpl implements FinancialTransactionServ
                     .lineNumber(item.getLineNumber())
                     .description(item.getDescription())
                     .build();
-
             journalEntryItems.add(entry);
 
         });

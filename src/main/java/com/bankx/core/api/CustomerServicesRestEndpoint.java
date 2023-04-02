@@ -34,23 +34,23 @@ public class CustomerServicesRestEndpoint {
 
     @GetMapping("/getAccountBalance")
     @ResponseBody
-    public CustomerAccountBalanceDto getAccountBalance(@RequestParam("accountNumber") String accountNumber) {
+    public CustomerAccountBalanceDto getAccountBalance(@RequestParam("customerAccountNumber") String customerAccountNumber) {
 
-        return customerService.getAccountBalance(accountNumber);
+        return customerService.getAccountBalance(customerAccountNumber);
     }
 
-    @PostMapping("/transfer-to-current")
+    @PostMapping("/transferToCurrentAccount")
     @ResponseBody
     public AccountTransferDto transferToCurrent(@RequestBody AccountTransferRequest request) {
 
-        return financialService.customerTransferFromSavingToCurrentAccount(request.getAccountNumber(), request.getAmount());
+        return financialService.customerTransferFromSavingToCurrentAccount(request.getCustomerAccountNumber(), request.getAmount());
     }
 
-    @PostMapping("/transfer-to-saving")
+    @PostMapping("/transferToSavingAccount")
     @ResponseBody
     public AccountTransferDto transferToSaving(@RequestBody AccountTransferRequest request) {
 
-        return financialService.customerTransferFromCurrentToSavingAccount(request.getAccountNumber(),
+        return financialService.customerTransferFromCurrentToSavingAccount(request.getCustomerAccountNumber(),
                 request.getAmount());
     }
 
