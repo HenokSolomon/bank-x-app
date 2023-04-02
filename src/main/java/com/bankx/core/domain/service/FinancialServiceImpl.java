@@ -135,7 +135,7 @@ public class FinancialServiceImpl implements FinancialService {
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
                 .statusCode(API_RESPONSE_CODE_SUCCESS)
-                .message("request successful")
+                .message("request successful, transaction detail can be checked using </transaction/getTransactionDetails> api on postman")
                 .build();
 
     }
@@ -185,7 +185,7 @@ public class FinancialServiceImpl implements FinancialService {
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
                 .statusCode(API_RESPONSE_CODE_SUCCESS)
-                .message("request successful")
+                .message("request successful, transaction detail can be checked using </transaction/getTransactionDetails> api on postman")
                 .build();
 
     }
@@ -251,10 +251,7 @@ public class FinancialServiceImpl implements FinancialService {
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
                 .statusCode(Constants.API_RESPONSE_CODE_SUCCESS)
-                .message("request successful. a few txn notes \n customers current account is debited by extra fee = " +
-                        "amount*" + Constants.CURRENT_ACCOUNT_PAYMENT_PERCENTAGE_FEE_RATE_PERCENTAGE
-                        + " \n system expected payable to processor bank is increased by amount  \n" +
-                        "for more detail about the transaction please call /transaction/getTransactionDetails on postman")
+                .message("request successful, transaction detail can be checked using </transaction/getTransactionDetails> api on postman")
                 .build();
 
     }
@@ -308,10 +305,7 @@ public class FinancialServiceImpl implements FinancialService {
         return AccountTransferDto.builder()
                 .transactionReference(transaction.getReferenceNumber())
                 .statusCode(Constants.API_RESPONSE_CODE_SUCCESS)
-                .message("request successful. a few txn notes \n customers saving account is credited by extra interest = " +
-                        "currentBalance*" + Constants.SAVING_ACCOUNT_CREDIT_PAYMENT_INTEREST_RATE_PERCENTAGE
-                        + " \n system expected receivable from processor bank is increased by amount \n" +
-                        "for more detail about the transaction please call /transaction/getTransactionDetails on postman")
+                .message("request successful, transaction detail can be checked using </transaction/getTransactionDetails> api on postman")
                 .build();
 
     }

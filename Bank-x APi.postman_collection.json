@@ -43,7 +43,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/customer/getAccountBalance?accountNumber=922230",
+					"raw": "http://localhost:8080/customer/getAccountBalance?accountNumber=560936",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -56,7 +56,7 @@
 					"query": [
 						{
 							"key": "accountNumber",
-							"value": "922230"
+							"value": "560936"
 						}
 					]
 				}
@@ -70,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountNumber\": \"197825\",  /* please copy actual value from Customer Signup Response*/\n\t\"amount\": 200\n}",
+					"raw": "{\n\t\"accountNumber\": \"664695\", \n\t\"amount\": 200\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -99,7 +99,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountNumber\": \"197825\", /* please copy actual value from Customer Signup Response*/\n\t\"amount\": 100\n}",
+					"raw": "{\n\t\"accountNumber\": \"185657\", \n\t\"amount\": 100\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,6 +116,116 @@
 					"path": [
 						"customer",
 						"transfer-to-saving"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction Details",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/transaction/getTransactionDetail?referenceNumber=4XZW0LUD",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transaction",
+						"getTransactionDetail"
+					],
+					"query": [
+						{
+							"key": "referenceNumber",
+							"value": "4XZW0LUD"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Bank Institutions",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/bank/getAllBankInstitutions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank",
+						"getAllBankInstitutions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bankz Charge Customer For Payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bankInstitutionAccountNumber\": \"000002\", \n    \"customerAccountNumber\": \"560936\", \n\t\"amount\": 50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bank/bankChargeCustomerForPayment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank",
+						"bankChargeCustomerForPayment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bankz Accept Payment Onto Customer Saving Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bankInstitutionAccountNumber\": \"000002\", \n    \"customerAccountNumber\": \"664695\", \n\t\"amount\": 200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bank/bankAcceptPaymentToCustomerSaving",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank",
+						"bankAcceptPaymentToCustomerSaving"
 					]
 				}
 			},
