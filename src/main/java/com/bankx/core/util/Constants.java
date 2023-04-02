@@ -2,6 +2,8 @@ package com.bankx.core.util;
 
 public class Constants {
 
+    public static final String API_RESPONSE_CODE_SUCCESS = "00";
+
     public static final String SYSTEM_ACCOUNT_ACCOUNT_NUMBER = "000001";
 
     public static final double SIGNUP_BONUS_AMOUNT = 500;
@@ -14,6 +16,7 @@ public class Constants {
     public static final String DEFAULT_ACCOUNT_ACTIVITY_EMAIL_TEMPLATE_NAME = "account-notification-email-template";
 
     public static final String TXN_PARAMETER_CUSTOMER_SAVING_ACCOUNT_ID = "customerSavingAccountId";
+    public static final String TXN_PARAMETER_CUSTOMER_CURRENT_ACCOUNT_ID = "customerCurrentAccountId";
 
 
 
