@@ -12,3 +12,6 @@ For assessment purpose
 - thymeleaf for templating engine 
 - docker
 - git , github 
+
+## How to run this app on your local environment 
+
