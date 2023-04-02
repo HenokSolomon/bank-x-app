@@ -5,8 +5,8 @@ plugins {
     id 'war'
 }
 
-group = 'com.ondeck.crm'
-version = '0.0.1-SNAPSHOT'
+group = 'com.bankx.core'
+version = ''
 sourceCompatibility = '11'
 
 configurations {
