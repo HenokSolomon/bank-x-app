@@ -7,6 +7,7 @@ import com.bankx.core.domain.entity.FinancialTransaction;
 import com.bankx.core.domain.entity.FinancialTransactionItem;
 import com.bankx.core.domain.exception.ServiceException;
 import com.bankx.core.domain.journal.FinancialTransactionTemplate;
+import com.bankx.core.domain.repository.AccountRepository;
 import com.bankx.core.domain.repository.FinancialAccountRepository;
 import com.bankx.core.domain.repository.FinancialTransactionItemRepository;
 import com.bankx.core.domain.repository.FinancialTransactionRepository;
@@ -34,8 +35,7 @@ public class FinancialTransactionServiceImpl implements FinancialTransactionServ
     private final FinancialTransactionRepository financialTransactionRepository;
     private final FinancialTransactionItemRepository financialTransactionItemRepository;
     private final FinancialAccountRepository financialAccountRepository;
-    private final AccountService accountService;
-
+    private final AccountRepository accountRepository;
 
     @Transactional
     @Override
@@ -102,7 +102,7 @@ public class FinancialTransactionServiceImpl implements FinancialTransactionServ
         List<FinancialTransactionItem> financialTransactionItems = financialTransactionItemRepository.
                 findAllByFinancialTransactionIdOrderByLineNumberAsc(financialTransaction.getFinancialTransactionId());
 
-        Account txnByAccount = accountService.findAccountById(financialTransaction.getAccountId());
+        Account txnByAccount = accountRepository.getById(financialTransaction.getAccountId());
 
         List<JournalEntryItem> journalEntryItems = new ArrayList<>();
 

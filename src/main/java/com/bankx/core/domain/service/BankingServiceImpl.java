@@ -3,21 +3,24 @@ package com.bankx.core.domain.service;
 
 import com.bankx.core.domain.entity.BankInstitution;
 import com.bankx.core.domain.repository.BankInstitutionRepository;
+import com.bankx.core.dto.AccountTransferDto;
 import com.bankx.core.dto.AllBankInstitutionDto;
 import com.bankx.core.dto.BankInstitutionDetailDto;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
-@Service("aankingService")
+@Service("bankingService")
 @AllArgsConstructor
 public class BankingServiceImpl implements BankingService {
 
     private final BankInstitutionRepository bankInstitutionRepository;
     private final AccountService accountService;
+    private final FinancialService financialService;
 
     @Override
     public AllBankInstitutionDto findAllBankInstitutions() {
@@ -36,6 +39,18 @@ public class BankingServiceImpl implements BankingService {
         );
 
         return allBankInstitutions;
+    }
+
+    @Override
+    public AccountTransferDto bankChargeCustomerForPayment(@NonNull String bankInstitutionAccountNumber,
+                                                           @NonNull String customerAccountNumber, double amount) {
+        return financialService.bankChargeCustomerForPayment(bankInstitutionAccountNumber, customerAccountNumber, amount);
+    }
+
+    @Override
+    public AccountTransferDto bankAcceptPaymentToCustomerSaving(@NonNull String bankInstitutionAccountNumber,
+                                                                @NonNull String customerAccountNumber, double amount) {
+        return financialService.bankAcceptPaymentToCustomerSaving(bankInstitutionAccountNumber, customerAccountNumber, amount);
     }
 
 }

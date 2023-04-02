@@ -23,7 +23,7 @@ public class TransactionDetailDto extends BaseResponseDto {
 
     @Data
     @Builder
-    public class JournalEntryItem {
+    public static class JournalEntryItem {
         private int lineNumber;
         private String accountType;
         private double debitAmount;

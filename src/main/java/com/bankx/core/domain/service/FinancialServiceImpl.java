@@ -6,6 +6,7 @@ import com.bankx.core.domain.entity.Customer;
 import com.bankx.core.domain.entity.FinancialAccount;
 import com.bankx.core.domain.entity.FinancialTransaction;
 import com.bankx.core.domain.exception.ServiceException;
+import com.bankx.core.domain.repository.CustomerRepository;
 import com.bankx.core.domain.repository.FinancialAccountRepository;
 import com.bankx.core.domain.types.AccountTypeEnum;
 import com.bankx.core.domain.types.FinancialAccountTypeEnum;
@@ -32,13 +33,14 @@ import static com.bankx.core.util.Constants.*;
 @AllArgsConstructor
 public class FinancialServiceImpl implements FinancialService {
 
-    private final AccountService accountService;
     private final FinancialAccountRepository financialAccountRepository;
-    private final FinancialTransactionService financialTransactionService;
-    private final CustomerService customerService;
-    private final MessagingService messagingService;
+    private final CustomerRepository customerRepository;
 
-    private Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();
+    private final FinancialTransactionService financialTransactionService;
+    private final MessagingService messagingService;
+    private final AccountService accountService;
+
+    private Map<FinancialAccountTypeEnum, UUID> SYSTEM_OWNED_FINANCIAL_ACCOUNT_CACHE = new HashMap<>();+
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -110,7 +112,7 @@ public class FinancialServiceImpl implements FinancialService {
             throw new ServiceException("transaction amount should be greater than zero");
         }
 
-        final Account customerAccount = customerService.getCustomerAccount(accountNumber);
+        final Account customerAccount = accountService.findByAccountNumber(accountNumber);
         FinancialAccount savingAccount = getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
                         , FinancialAccountTypeEnum.SAVING_ACCOUNT);
 
@@ -127,7 +129,7 @@ public class FinancialServiceImpl implements FinancialService {
 
 
         /* send notification for customer about account transfer */
-        final Customer customer = customerService.getCustomerByAccountId(customerAccount.getAccountId());
+        final Customer customer = customerRepository.findFirstByAccountId(customerAccount.getAccountId());
         sendAccountActivityNotificationEmail(customer.getEmail());
 
         return AccountTransferDto.builder()
@@ -161,7 +163,7 @@ public class FinancialServiceImpl implements FinancialService {
             throw new ServiceException("transaction amount should be greater than zero");
         }
 
-        final Account customerAccount = customerService.getCustomerAccount(accountNumber);
+        final Account customerAccount = accountService.findByAccountNumber(accountNumber);
         FinancialAccount savingAccount = getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
                         , FinancialAccountTypeEnum.SAVING_ACCOUNT);
 
@@ -177,7 +179,7 @@ public class FinancialServiceImpl implements FinancialService {
                         savingAccount.getFinancialAccountId(), currentAccount.getFinancialAccountId(), amount);
 
         /* send notification for customer about account transfer */
-        final Customer customer = customerService.getCustomerByAccountId(customerAccount.getAccountId());
+        final Customer customer = customerRepository.findFirstByAccountId(customerAccount.getAccountId());
         sendAccountActivityNotificationEmail(customer.getEmail());
 
         return AccountTransferDto.builder()
@@ -211,7 +213,7 @@ public class FinancialServiceImpl implements FinancialService {
             throw new ServiceException("transaction amount should be greater than zero");
         }
 
-        final Account customerAccount = customerService.getCustomerAccount(customerAccountNumber);
+        final Account customerAccount = accountService.findByAccountNumber(customerAccountNumber);
 
         final Account bankInstAccount = accountService.findByAccountNumber(bankInstitutionAccountNumber);
         if (!bankInstAccount.getAccountTypeEnum().equals(AccountTypeEnum.BUSINESS)) {
@@ -266,7 +268,7 @@ public class FinancialServiceImpl implements FinancialService {
             throw new ServiceException("transaction amount should be greater than zero");
         }
 
-        final Account customerAccount = customerService.getCustomerAccount(customerAccountNumber);
+        final Account customerAccount = accountService.findByAccountNumber(customerAccountNumber);
 
         final Account bankInstAccount = accountService.findByAccountNumber(bankInstitutionAccountNumber);
         if (!bankInstAccount.getAccountTypeEnum().equals(AccountTypeEnum.BUSINESS)) {

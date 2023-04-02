@@ -14,13 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class BankServicesRestEndpoint {
 
     private final BankingService bankingService;
-    private final FinancialService financialService;
 
-
-    public BankServicesRestEndpoint(BankingService bankingService,
-                                    FinancialService financialService) {
+    public BankServicesRestEndpoint(BankingService bankingService) {
         this.bankingService = bankingService;
-        this.financialService = financialService;
     }
 
 
@@ -35,7 +31,7 @@ public class BankServicesRestEndpoint {
     @ResponseBody
     public AccountTransferDto bankChargeCustomerForPayment(@RequestBody BankAccountPaymentRequest request) {
 
-        return financialService.bankChargeCustomerForPayment(request.getBankInstitutionAccountNumber(),
+        return bankingService.bankChargeCustomerForPayment(request.getBankInstitutionAccountNumber(),
                 request.getCustomerAccountNumber(), request.getAmount());
     }
 
@@ -43,7 +39,7 @@ public class BankServicesRestEndpoint {
     @ResponseBody
     public AccountTransferDto bankAcceptPaymentToCustomerSaving(@RequestBody BankAccountPaymentRequest request) {
 
-        return financialService.bankAcceptPaymentToCustomerSaving(request.getBankInstitutionAccountNumber(),
+        return bankingService.bankAcceptPaymentToCustomerSaving(request.getBankInstitutionAccountNumber(),
                 request.getCustomerAccountNumber(), request.getAmount());
     }
 

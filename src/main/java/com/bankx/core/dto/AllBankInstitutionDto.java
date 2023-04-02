@@ -13,7 +13,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
 public class AllBankInstitutionDto extends BaseResponseDto {
-    private List<BankInstitutionDetailDto> bankInstitutions = new ArrayList<>();
+    private final List<BankInstitutionDetailDto> bankInstitutions = new ArrayList<>();
 }
