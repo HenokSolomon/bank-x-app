@@ -19,6 +19,7 @@ public class BankChargeCurrentAccountForPaymentTransactionTemplate implements Fi
 
         final UUID bankThirdPartyPayableAccountId = UUID.fromString(currentTransactionParameter.get(Constants.TXN_PARAMETER_THIRD_PARTY_BANK_PAYABLE_ACCOUNT_ID).toString());
         final UUID customerCurrentAccountId = UUID.fromString(currentTransactionParameter.get(Constants.TXN_PARAMETER_CUSTOMER_CURRENT_ACCOUNT_ID).toString());
+        final UUID systemFeeIncomeAccountId = systemOwnedFinancialAccounts.get(FinancialAccountTypeEnum.FEE_INCOME_ACCOUNT);
 
         final double feeRatePercentage = Double.parseDouble(currentTransactionParameter.get(Constants.TXN_PARAMETER_CURRENT_ACCOUNT_PAYMENT_FEE_RATE).toString());
         /*calculate customer fee that will be debited from customer's current account*/
@@ -39,7 +40,7 @@ public class BankChargeCurrentAccountForPaymentTransactionTemplate implements Fi
                "3rd line decreases customer current balance with fee debit current account" ) );
 
         /* 4th line increases income account by fee credit income account */
-        financialTransactionItems.add( new FinancialTransactionItem(4, financialTransactionId, customerCurrentAccountId, 0.0, feeAmount,
+        financialTransactionItems.add( new FinancialTransactionItem(4, financialTransactionId, systemFeeIncomeAccountId, 0.0, feeAmount,
                 "4th line increases income account by fee credit income account") );
 
         return financialTransactionItems;
