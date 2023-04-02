@@ -6,9 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
-public class AccountTransferDto extends BaseResponseDto {
-    private final String transactionReference;
+public class BankInstitutionDetailDto {
+    private final String bankName;
+    private final String accountNumber;
 }

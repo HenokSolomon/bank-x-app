@@ -1,11 +1,14 @@
 package com.bankx.core.domain.service;
 
+import com.bankx.core.domain.entity.Account;
+import com.bankx.core.domain.entity.Customer;
 import com.bankx.core.dto.CustomerAccountBalanceDto;
 import com.bankx.core.dto.AccountTransferDto;
 import com.bankx.core.dto.CustomerDetailDto;
 import lombok.NonNull;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 public interface CustomerService {
 
@@ -14,7 +17,7 @@ public interface CustomerService {
 
     CustomerAccountBalanceDto getAccountBalance(@NonNull String accountNumber);
 
-    AccountTransferDto transferFromSavingToCurrentAccount(@NonNull String accountNumber, @NonNull double amount);
+    Account getCustomerAccount(@NonNull String accountNumber);
 
-    AccountTransferDto transferFromCurrentToSavingAccount(@NonNull String accountNumber, @NonNull double amount);
+    Customer getCustomerByAccountId(@NonNull UUID accountId);
 }

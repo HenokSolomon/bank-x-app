@@ -2,12 +2,14 @@ package com.bankx.core.domain.service;
 
 
 import com.bankx.core.domain.entity.Account;
+import com.bankx.core.domain.exception.ServiceException;
 import com.bankx.core.domain.repository.AccountRepository;
 import com.bankx.core.domain.types.AccountTypeEnum;
 import com.bankx.core.util.RandomUtil;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -42,7 +44,24 @@ public class AccountServiceImpl implements AccountService {
         return RandomUtil.generateNumber(DEFAULT_ACCOUNT_NUMBER_LENGTH);
     }
 
+    @Override
     public Account findByAccountNumber(String accountNumber) {
-        return accountRepository.findFirstByAccountNumber(accountNumber);
+
+        if (StringUtils.isBlank(accountNumber)) {
+            throw new ServiceException("invalid account number");
+        }
+
+        final Account account = accountRepository.findFirstByAccountNumber(accountNumber);
+        if (account == null) {
+            throw new ServiceException("account with accountNumber " + accountNumber + " doesn't exist.");
+        }
+
+        return account;
     }
+
+    @Override
+    public Account findAccountById(UUID accountId) {
+        return accountRepository.getById(accountId);
+    }
+
 }

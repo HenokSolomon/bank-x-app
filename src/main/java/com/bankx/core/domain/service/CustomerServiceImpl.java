@@ -9,7 +9,6 @@ import com.bankx.core.domain.repository.CustomerRepository;
 import com.bankx.core.domain.types.AccountTypeEnum;
 import com.bankx.core.domain.types.FinancialAccountTypeEnum;
 import com.bankx.core.dto.CustomerAccountBalanceDto;
-import com.bankx.core.dto.AccountTransferDto;
 import com.bankx.core.dto.CustomerDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -22,6 +21,7 @@ import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static com.bankx.core.util.Constants.*;
@@ -101,7 +101,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerAccountBalanceDto getAccountBalance(@NonNull String accountNumber) {
 
-        final Account customerAccount = getAccount(accountNumber);
+        final Account customerAccount = getCustomerAccount(accountNumber);
 
         List<FinancialAccount> financialAccounts =
                 financialService.getFinancialAccounts(customerAccount.getAccountId());
@@ -123,130 +123,22 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
-
     @Override
-    public AccountTransferDto transferFromSavingToCurrentAccount(@NonNull String accountNumber,
-                                                                 @NonNull double amount) {
-
-        final Account customerAccount = getAccount(accountNumber);
-
-        FinancialAccount savingAccount =
-                financialService.getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
-                        , FinancialAccountTypeEnum.SAVING_ACCOUNT);
-        if (null == savingAccount) {
-            throw new ServiceException("account holder doesn't possess saving account");
-        }
-
-        FinancialAccount currentAccount =
-                financialService.getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
-                        , FinancialAccountTypeEnum.CURRENT_ACCOUNT);
-        if (null == currentAccount) {
-            throw new ServiceException("account holder doesn't possess current account");
-        }
-
-        if (savingAccount.getAvailableBalance() < amount) {
-            throw new ServiceException("insufficient saving account balance , current saving balance is " + savingAccount.getAvailableBalance());
-        }
-
-        /* record transfer transaction */
-        FinancialTransaction transaction =
-                financialService.transferFromSavingToCurrentAccount(customerAccount.getAccountId(),
-                savingAccount.getFinancialAccountId(), currentAccount.getFinancialAccountId(), amount);
-
-
-        /* send notification for customer about account transfer */
-        try {
-
-            final Customer customer = customerRepository.findFirstByAccountId(currentAccount.getAccountId());
-
-            Map<String, Object> templateParam = new HashMap<>();
-
-            messagingService.sendEmail(DEFAULT_EMAIL_FROM, customer.getEmail(), DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT,
-                    DEFAULT_ACCOUNT_ACTIVITY_EMAIL_TEMPLATE_NAME, templateParam);
-
-        } catch (Exception e) {
-            /*don't fail the transaction just because messaging failed , just catch and log the error */
-            log.error("CustomerServiceImpl : error sending notification email ", e);
-        }
-
-
-        return AccountTransferDto.builder()
-                .transactionReference(transaction.getReferenceNumber())
-                .statusCode(API_RESPONSE_CODE_SUCCESS)
-                .message("request successful")
-                .build();
-
-    }
-
-
-    @Override
-    public AccountTransferDto transferFromCurrentToSavingAccount(@NonNull String accountNumber,
-                                                                 @NonNull double amount) {
-
-        final Account customerAccount = getAccount(accountNumber);
-
-        FinancialAccount savingAccount =
-                financialService.getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
-                        , FinancialAccountTypeEnum.SAVING_ACCOUNT);
-        if (null == savingAccount) {
-            throw new ServiceException("account holder doesn't possess saving account");
-        }
-
-        FinancialAccount currentAccount =
-                financialService.getFinancialAccountByAccountIdAndFinancialAccountType(customerAccount.getAccountId()
-                        , FinancialAccountTypeEnum.CURRENT_ACCOUNT);
-        if (null == currentAccount) {
-            throw new ServiceException("account holder doesn't possess current account");
-        }
-
-        if (currentAccount.getAvailableBalance() < amount) {
-            throw new ServiceException("insufficient saving account balance , current saving balance is " + savingAccount.getAvailableBalance());
-        }
-
-        /* record transfer transaction */
-        FinancialTransaction transaction =
-                financialService.transferFromCurrentToSavingAccount(customerAccount.getAccountId(),
-                savingAccount.getFinancialAccountId(), currentAccount.getFinancialAccountId(), amount);
-
-
-        /* send notification for customer about account transfer */
-        try {
-
-            final Customer customer = customerRepository.findFirstByAccountId(currentAccount.getAccountId());
-
-            Map<String, Object> templateParam = new HashMap<>();
-
-            messagingService.sendEmail(DEFAULT_EMAIL_FROM, customer.getEmail(), DEFAULT_ACCOUNT_ACTIVITY_EMAIL_SUBJECT,
-                    DEFAULT_ACCOUNT_ACTIVITY_EMAIL_TEMPLATE_NAME, templateParam);
-
-        } catch (Exception e) {
-            /*don't fail the transaction just because messaging failed , just catch and log the error */
-            log.error("CustomerServiceImpl : error sending notification email ", e);
-        }
-
-
-        return AccountTransferDto.builder()
-                .transactionReference(transaction.getReferenceNumber())
-                .statusCode(API_RESPONSE_CODE_SUCCESS)
-                .message("request successful")
-                .build();
-
-    }
-
-
-    private Account getAccount(String accountNumber) {
-
-        if (StringUtils.isBlank(accountNumber)) {
-            throw new ServiceException("invalid account number");
-        }
+    public Account getCustomerAccount(@NonNull String accountNumber) {
 
         final Account customerAccount = accountService.findByAccountNumber(accountNumber);
 
-        if (customerAccount == null) {
-            throw new ServiceException("customer with account number " + accountNumber + " doesn't exist.");
+        if (!customerAccount.getAccountTypeEnum().equals(AccountTypeEnum.CUSTOMER)) {
+            throw new ServiceException("account with account number " + accountNumber + " is not a valid customer " +
+                    "account ");
         }
 
         return customerAccount;
+    }
+
+    @Override
+    public Customer getCustomerByAccountId(@NonNull UUID accountId) {
+        return customerRepository.findFirstByAccountId(accountId);
     }
 
     private void validateEmail(String email) {
@@ -255,9 +147,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ServiceException("customer email address is required");
         }
 
-        final boolean match =
-                (Pattern.compile(REGEX_MATCHER_VALID_EMAIL, Pattern.CASE_INSENSITIVE).matcher(email).matches());
-
+        final boolean match = (Pattern.compile(REGEX_MATCHER_VALID_EMAIL, Pattern.CASE_INSENSITIVE).matcher(email).matches());
         if (!match) {
             throw new ServiceException("the email address is not valid" + email);
         }
@@ -266,7 +156,6 @@ public class CustomerServiceImpl implements CustomerService {
         if (existingCustomerByEmail.isPresent()) {
             throw new ServiceException("email address is already used by another customer");
         }
-
     }
 
 
