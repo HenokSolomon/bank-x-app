@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "b1460cc3-de2e-4bf5-a332-4976266c446d",
+		"name": "Bank-x APi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Henok\",\n\t\"lastName\": \"Solomon\",\n\t\"email\": \"emailtohenok@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Get Account Balance",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customer/getAccountBalance?accountNumber=922230",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"getAccountBalance"
+					],
+					"query": [
+						{
+							"key": "accountNumber",
+							"value": "922230"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Transfer From Saving To Current",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountNumber\": \"197825\",  /* please copy actual value from Customer Signup Response*/\n\t\"amount\": 200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/transfer-to-current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"transfer-to-current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Transfer From Current To Saving",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"accountNumber\": \"197825\", /* please copy actual value from Customer Signup Response*/\n\t\"amount\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/transfer-to-saving",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"transfer-to-saving"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
