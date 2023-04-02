@@ -94,6 +94,8 @@ public class CustomerServiceImpl implements CustomerService {
                 .accountNumber(account.getAccountNumber())
                 .currentAccountBalance(0d)
                 .savingAccountBalance(bonusTxn.getAmount())
+                .statusCode(API_RESPONSE_CODE_SUCCESS)
+                .message("request completed successfully")
                 .build();
     }
 
