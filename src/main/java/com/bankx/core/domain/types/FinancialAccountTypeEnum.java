@@ -17,4 +17,7 @@ public enum FinancialAccountTypeEnum {
         this.accountCodeType = accountCodeType;
     }
 
+    public FinancialAccountCodeTypeEnum getAccountCodeType() {
+        return accountCodeType;
+    }
 }

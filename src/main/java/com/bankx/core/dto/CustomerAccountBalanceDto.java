@@ -7,13 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class CustomerDetailDto {
-
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String accountNumber;
+public class CustomerAccountBalanceDto {
     private final double savingAccountBalance;
     private final double currentAccountBalance;
-
 }

@@ -1,4 +1,4 @@
-package com.bankx.core.domain.exceptions;
+package com.bankx.core.domain.exception;
 
 public class ServiceException extends RuntimeException {
 

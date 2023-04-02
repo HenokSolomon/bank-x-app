@@ -32,4 +32,12 @@ public class FinancialTransactionItem extends Audited {
     @Column(name = "credit_amount")
     private double creditAmount;
 
+
+    public FinancialTransactionItem(UUID financialTransactionId, UUID financialAccountId, double debitAmount, double creditAmount) {
+        this.financialTransactionId = financialTransactionId;
+        this.financialAccountId = financialAccountId;
+        this.debitAmount = debitAmount;
+        this.creditAmount = creditAmount;
+    }
+
 }

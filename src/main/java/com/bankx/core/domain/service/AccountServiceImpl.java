@@ -10,6 +10,8 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service("accountService")
 @AllArgsConstructor
@@ -38,5 +40,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String generateAccountNumber() {
         return RandomUtil.generateNumber(DEFAULT_ACCOUNT_NUMBER_LENGTH);
+    }
+
+    public Account findByAccountNumber(String accountNumber) {
+        return accountRepository.findFirstByAccountNumber(accountNumber);
     }
 }

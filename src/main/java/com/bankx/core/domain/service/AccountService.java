@@ -8,4 +8,6 @@ public interface AccountService {
     Account createAccount(AccountTypeEnum accountTypeEnum, String principal, String credentials);
 
     String generateAccountNumber();
+
+    Account findByAccountNumber(String accountNumber);
 }

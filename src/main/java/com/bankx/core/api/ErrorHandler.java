@@ -1,7 +1,7 @@
 package com.bankx.core.api;
 
 import com.bankx.core.api.model.ErrorResponse;
-import com.bankx.core.domain.exceptions.ServiceException;
+import com.bankx.core.domain.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
