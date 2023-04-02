@@ -23,10 +23,12 @@ public class CustomerTransferFromCurrentToSavingTransactionTemplate implements F
         List<FinancialTransactionItem> financialTransactionItems = new ArrayList<>();
 
         /* first line decreases current balance debit current account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerCurrentAccountId, transferAmount, 0.0) );
+        financialTransactionItems.add( new FinancialTransactionItem(1, financialTransactionId, customerCurrentAccountId, transferAmount, 0d,
+                "first line decreases current balance debit current account") );
 
         /*2nd line increases saving balance , credit saving account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerSavingAccountId, 0.0, transferAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(2, financialTransactionId, customerSavingAccountId, 0d, transferAmount,
+                "2nd line increases saving balance , credit saving account") );
 
         return financialTransactionItems;
     }

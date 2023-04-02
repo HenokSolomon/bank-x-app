@@ -15,5 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AllBankInstitutionDto extends BaseResponseDto {
-    private List<BankInstitutionDetailDto> bankInstitutionDetailList = new ArrayList<>();
+    private List<BankInstitutionDetailDto> bankInstitutions = new ArrayList<>();
 }

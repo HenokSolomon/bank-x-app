@@ -22,10 +22,12 @@ public class CustomerSignupBonusPaymentTransactionTemplate implements FinancialT
         List<FinancialTransactionItem> financialTransactionItems = new ArrayList<>();
 
         /* first line credit customer saving account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerSavingAccountId, 0.0, bonusAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(1, financialTransactionId, customerSavingAccountId, 0d, bonusAmount,
+                "first line credit customer saving account") );
 
         /*2nd line recognize expense , debit system expense account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, systemBonusExpenseAccountId, bonusAmount, 0.0) );
+        financialTransactionItems.add( new FinancialTransactionItem(2, financialTransactionId, systemBonusExpenseAccountId, bonusAmount, 0d,
+                "2nd line recognize expense , debit system expense account") );
 
         return financialTransactionItems;
     }

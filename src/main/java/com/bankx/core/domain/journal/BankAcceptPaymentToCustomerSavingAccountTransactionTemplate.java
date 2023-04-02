@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("UnnecessaryLocalVariable")
 public class BankAcceptPaymentToCustomerSavingAccountTransactionTemplate implements FinancialTransactionTemplate {
 
     @Override
@@ -30,16 +31,20 @@ public class BankAcceptPaymentToCustomerSavingAccountTransactionTemplate impleme
         List<FinancialTransactionItem> financialTransactionItems = new ArrayList<>();
 
         /* first line increases customer saving balance credit saving account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerSavingAccountId, 0d, paymentCreditAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(1, financialTransactionId, customerSavingAccountId, 0d, paymentCreditAmount,
+                "first line increases customer saving balance credit saving account") );
 
         /*2nd line increases bank's 3rd party receivable account , debit asset account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, bankThirdPartyReceivableAccountId, paymentCreditAmount, 0d) );
+        financialTransactionItems.add( new FinancialTransactionItem(2, financialTransactionId, bankThirdPartyReceivableAccountId, paymentCreditAmount, 0d,
+                "2nd line increases bank's 3rd party receivable account , debit asset account") );
 
         /* 3rd line increases customer saving balance with interestAmount credit saving account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerSavingAccountId, 0d, interestAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(3, financialTransactionId, customerSavingAccountId, 0d, interestAmount,
+                "3rd line increases customer saving balance with interestAmount credit saving account") );
 
         /* 4th line increases interest expenses account by interestAmount debit expense account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, systemInterestExpenseAccountId, interestAmount, 0d) );
+        financialTransactionItems.add( new FinancialTransactionItem(4, financialTransactionId, systemInterestExpenseAccountId, interestAmount, 0d,
+                "4th line increases interest expenses account by interestAmount debit expense account") );
 
         return financialTransactionItems;
     }

@@ -27,16 +27,20 @@ public class BankChargeCurrentAccountForPaymentTransactionTemplate implements Fi
         List<FinancialTransactionItem> financialTransactionItems = new ArrayList<>();
 
         /* first line decreases customer current balance debit current account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerCurrentAccountId, chargeAmount, 0.0) );
+        financialTransactionItems.add( new FinancialTransactionItem(1, financialTransactionId, customerCurrentAccountId, chargeAmount, 0d,
+                "first line decreases customer current balance debit current account") );
 
         /*2nd line increases bank's 3rd party payable account , credit liability account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, bankThirdPartyPayableAccountId, 0.0, chargeAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(2, financialTransactionId, bankThirdPartyPayableAccountId, 0d, chargeAmount,
+                "2nd line increases bank's 3rd party payable account , credit liability account") );
 
         /* 3rd line decreases customer current balance with fee debit current account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerCurrentAccountId, feeAmount, 0.0) );
+        financialTransactionItems.add( new FinancialTransactionItem(3, financialTransactionId, customerCurrentAccountId, feeAmount, 0d,
+               "3rd line decreases customer current balance with fee debit current account" ) );
 
         /* 4th line increases income account by fee credit income account */
-        financialTransactionItems.add( new FinancialTransactionItem(financialTransactionId, customerCurrentAccountId, 0.0, feeAmount) );
+        financialTransactionItems.add( new FinancialTransactionItem(4, financialTransactionId, customerCurrentAccountId, 0.0, feeAmount,
+                "4th line increases income account by fee credit income account") );
 
         return financialTransactionItems;
     }

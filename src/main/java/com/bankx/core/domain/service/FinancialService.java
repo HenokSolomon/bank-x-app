@@ -20,13 +20,13 @@ public interface FinancialService {
 
     FinancialAccount getFinancialAccountByAccountIdAndFinancialAccountType(@NonNull UUID accountId, @NonNull FinancialAccountTypeEnum financialAccountType);
 
-    AccountTransferDto transferFromSavingToCurrentAccount(@NonNull String accountNumber, double amount);
+    AccountTransferDto customerTransferFromSavingToCurrentAccount(@NonNull String accountNumber, double amount);
 
     FinancialTransaction transferFromSavingToCurrentAccount(@NonNull UUID accountId,
                                                             @NonNull UUID savingFinancialAccountId,
                                                             @NonNull UUID currentFinancialAccountId, double amount);
 
-    AccountTransferDto transferFromCurrentToSavingAccount(@NonNull String accountNumber, double amount);
+    AccountTransferDto customerTransferFromCurrentToSavingAccount(@NonNull String accountNumber, double amount);
 
     FinancialTransaction transferFromCurrentToSavingAccount(@NonNull UUID accountId,
                                                             @NonNull UUID savingFinancialAccountId,

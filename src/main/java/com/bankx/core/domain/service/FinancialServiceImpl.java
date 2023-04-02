@@ -104,7 +104,7 @@ public class FinancialServiceImpl implements FinancialService {
     }
 
     @Override
-    public AccountTransferDto transferFromSavingToCurrentAccount(@NonNull String accountNumber, double amount) {
+    public AccountTransferDto customerTransferFromSavingToCurrentAccount(@NonNull String accountNumber, double amount) {
 
         if(amount <= 0d) {
             throw new ServiceException("transaction amount should be greater than zero");
@@ -155,7 +155,7 @@ public class FinancialServiceImpl implements FinancialService {
 
 
     @Override
-    public AccountTransferDto transferFromCurrentToSavingAccount(@NonNull String accountNumber, double amount) {
+    public AccountTransferDto customerTransferFromCurrentToSavingAccount(@NonNull String accountNumber, double amount) {
 
         if(amount <= 0d) {
             throw new ServiceException("transaction amount should be greater than zero");
@@ -187,7 +187,6 @@ public class FinancialServiceImpl implements FinancialService {
                 .build();
 
     }
-
 
     @Override
     public FinancialTransaction transferFromCurrentToSavingAccount(@NonNull UUID accountId,

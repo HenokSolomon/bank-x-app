@@ -8,7 +8,8 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountTransferRequest {
-    private @NonNull String accountNumber;
+public class BankAccountPaymentRequest {
+    private @NonNull String bankInstitutionAccountNumber;
+    private @NonNull String customerAccountNumber;
     private double amount;
 }

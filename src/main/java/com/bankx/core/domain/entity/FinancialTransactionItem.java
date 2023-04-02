@@ -20,6 +20,9 @@ public class FinancialTransactionItem extends Audited {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID financialTransactionItemId;
 
+    @Column(name = "line_number")
+    private int lineNumber;
+
     @Column(name = "financial_transaction_id", columnDefinition = "uuid")
     private UUID financialTransactionId;
 
@@ -32,12 +35,19 @@ public class FinancialTransactionItem extends Audited {
     @Column(name = "credit_amount")
     private double creditAmount;
 
+    private String description;
 
-    public FinancialTransactionItem(UUID financialTransactionId, UUID financialAccountId, double debitAmount, double creditAmount) {
+
+    public FinancialTransactionItem(int lineNumber, UUID financialTransactionId, UUID financialAccountId,
+                                    double debitAmount, double creditAmount, String description) {
+
+        this.lineNumber = lineNumber;
         this.financialTransactionId = financialTransactionId;
         this.financialAccountId = financialAccountId;
         this.debitAmount = debitAmount;
         this.creditAmount = creditAmount;
+        this.description = description;
+
     }
 
 }
