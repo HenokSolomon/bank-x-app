@@ -43,7 +43,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/customer/getAccountBalance?accountNumber=560936",
+					"raw": "http://localhost:8080/customer/getAccountBalance?customerAccountNumber=664695",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -55,8 +55,8 @@
 					],
 					"query": [
 						{
-							"key": "accountNumber",
-							"value": "560936"
+							"key": "customerAccountNumber",
+							"value": "664695"
 						}
 					]
 				}
@@ -70,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountNumber\": \"664695\", \n\t\"amount\": 200\n}",
+					"raw": "{\n\t\"customerAccountNumber\": \"320021\", \n\t\"amount\": 200\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,7 +78,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/customer/transfer-to-current",
+					"raw": "http://localhost:8080/customer/transferToCurrentAccount",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -86,7 +86,7 @@
 					"port": "8080",
 					"path": [
 						"customer",
-						"transfer-to-current"
+						"transferToCurrentAccount"
 					]
 				}
 			},
@@ -99,7 +99,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"accountNumber\": \"185657\", \n\t\"amount\": 100\n}",
+					"raw": "{\n\t\"customerAccountNumber\": \"185657\", \n\t\"amount\": 100\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -107,7 +107,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/customer/transfer-to-saving",
+					"raw": "http://localhost:8080/customer/transferToSavingAccount",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,7 +115,7 @@
 					"port": "8080",
 					"path": [
 						"customer",
-						"transfer-to-saving"
+						"transferToSavingAccount"
 					]
 				}
 			},
@@ -130,7 +130,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/transaction/getTransactionDetail?referenceNumber=4XZW0LUD",
+					"raw": "http://localhost:8080/transaction/getTransactionDetail?referenceNumber=B0B0PGY8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -143,7 +143,7 @@
 					"query": [
 						{
 							"key": "referenceNumber",
-							"value": "4XZW0LUD"
+							"value": "B0B0PGY8"
 						}
 					]
 				}
@@ -180,7 +180,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"bankInstitutionAccountNumber\": \"000002\", \n    \"customerAccountNumber\": \"560936\", \n\t\"amount\": 50\n}",
+					"raw": "{\n\t\"bankInstitutionAccountNumber\": \"000002\", \n    \"customerAccountNumber\": \"320021\", \n\t\"amount\": 50\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,6 +226,35 @@
 					"path": [
 						"bank",
 						"bankAcceptPaymentToCustomerSaving"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bankz Submit Bulk Bank Trasnactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"bankInstitutionAccountNumber\": \"000002\",\n  \"transactionRequests\": [\n    {\n      \"requestReference\": \"0001\",\n      \"bankTransactionType\": \"CHARGE_CUSTOMER_ACCOUNT\",\n      \"customerAccountNumber\": \"320021\",\n      \"amount\": 20\n    },\n    {\n      \"requestReference\": \"0002\",\n      \"bankTransactionType\": \"CREDIT_CUSTOMER_SAVING_ACCOUNT\",\n      \"customerAccountNumber\": \"320021\",\n      \"amount\": 50\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bank/submitBulkBankTransactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bank",
+						"submitBulkBankTransactions"
 					]
 				}
 			},
