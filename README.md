@@ -1,6 +1,5 @@
-# Bank-x-app
-For assessment purpose
-
+# full-Fledged Mobile Banking System Back-End Template 
+built using double entry accounting logic
 ### Tools Used
 - Java 11 , Spring Boot 2.6.3, Tomcat embeded webserver
 - Gradle build tool, **H2 in memory DB** , Restful API
